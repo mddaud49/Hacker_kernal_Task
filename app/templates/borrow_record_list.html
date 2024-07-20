@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .pagination {
+            text-align: center;
+            margin: 20px;
+        }
+        .pagination a {
+            text-decoration: none;
+            color: #337ab7;
+            border: 1px solid #337ab7;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .pagination .current {
+            font-weight: bold;
+            color: #337ab7;
+        }
+        .convert-excel {
+            position: absolute;
+            top: 30px;
+            right: 70px;
+            width: 180px;
+            height: 35px;
+            background-color: rgb(67, 67, 185);
+            margin-top: 100px;
+            text-align: center;
+            padding-top: 10px;
+        }
+        .convert-excel a {
+            text-decoration: none;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    {% block extra_head %}
+    <h2>Borrowrecord List</h2>
+    <div class="convert-excel">
+        <a href="{% url 'borrowrecord_to_excel' %}">convert excel sheet</a>
+    </div>
+    <ul>
+        {% for borrowrecord in page_obj %}
+        <li>{{ borrowrecord.user_name }} - {{ borrowrecord.book }} - {{ borrowrecord.borrow_date }} - {{ borrowrecord.return_date }}</li>
+        {% endfor %}
+    </ul>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    {% endblock %}
+</body>
+</html>
